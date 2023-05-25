@@ -10,11 +10,13 @@ public class ballScript : MonoBehaviour
     private int yAxis, player1_score, player2_score;
     private bool goingRight, goingUp;
     public Text scoreBoard;
+    private SpriteRenderer sprite;
 
     // Start is called before the first frame update
     void Start()
     {
         yAxis = 0; //as default
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -39,9 +41,15 @@ public class ballScript : MonoBehaviour
         if (collision.gameObject.tag == "paddles")
         {
             if (goingRight)
+            {
+                sprite.flipX = false;
                 goingRight = false;
+            }
             else
+            {
+                sprite.flipX = true;
                 goingRight = true;
+            }        
                 
         }
         else
@@ -51,12 +59,15 @@ public class ballScript : MonoBehaviour
             {
                 goingUp = false;
                 yAxis = -1;
+                transform.rotation = Quaternion.Euler(0, 0, -41.6f);
             }
-
+            else if(yAxis==0)
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             else
             {
                 yAxis = 1;
                 goingUp = true;
+                transform.rotation = Quaternion.Euler(0, 0, 19);
             }
                 
         }
