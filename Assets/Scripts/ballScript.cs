@@ -7,15 +7,18 @@ using UnityEngine.UI;
 public class ballScript : MonoBehaviour
 {
     public int speed;
-    private int yAxis, player1_score, player2_score;
+    private int yAxis,xAxis ,player1_score, player2_score;
     private bool goingRight, goingUp;
-    public Text scoreBoard;
+    public Text scoreBoard, playerWinText;
     private SpriteRenderer sprite;
+    public GameObject popUp;
 
     // Start is called before the first frame update
     void Start()
     {
         yAxis = 0; //as default
+        xAxis = 1; //as default
+
         sprite = GetComponent<SpriteRenderer>();
     }
 
@@ -24,9 +27,9 @@ public class ballScript : MonoBehaviour
     {
         //movement of the ball
         if (goingRight)
-            transform.position -= new Vector3(1, yAxis, 0) * (speed * Time.deltaTime);
+            transform.position -= new Vector3(xAxis, yAxis, 0) * (speed * Time.deltaTime);
         else
-            transform.position += new Vector3(1, yAxis, 0) * (speed * Time.deltaTime);
+            transform.position += new Vector3(xAxis, yAxis, 0) * (speed * Time.deltaTime);
     }
 
 
@@ -89,6 +92,26 @@ public class ballScript : MonoBehaviour
         scoreBoard.text = player1_score+" : "+player2_score; //change the score 
         transform.position = new Vector3(0, 0 , 0); //like a restart way
         speed = 5; //restart the speed to 5
+
+        if(player1_score == 2 || player2_score == 2)
+        {
+            showDialog();
+        }
     }
 
+    private void showDialog()
+    {
+        //to make it pause
+        xAxis = 0;
+        yAxis = 0;
+
+        //show the pop up dialog
+        popUp.SetActive(true);
+
+        //check who's the winner
+        string playerWon = player1_score == 10 ? "Player 1 WIN!" : "Player 2 WIN!";
+        playerWinText.text = playerWon;
+
+
+    }
 }
